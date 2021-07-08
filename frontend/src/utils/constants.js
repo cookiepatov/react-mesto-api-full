@@ -21,7 +21,7 @@ const apiData = {
 }
 
 const authData = {
-  baseUrl: 'https://auth.nomoreparties.co',
+  baseUrl: 'https://api.mesto-reinat.nomoredomains.monster',
   headers: {
     'Content-Type': 'application/json'
   }
