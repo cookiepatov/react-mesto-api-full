@@ -1,0 +1,12 @@
+.popup__close-button_position_form {
+  left: calc(50% + 210px);
+  top: calc(50% - 230px);
+}
+
+
+@media screen and (max-width: 560px) {
+  .popup__close-button_position_form {
+    left: calc(50% + 105px);
+    top: calc(50% - 230px);
+  }
+}

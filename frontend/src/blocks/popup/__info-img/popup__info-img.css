@@ -1,0 +1,8 @@
+.popup__info-img {
+  justify-self: center;
+  align-self: center;
+  width: 120px;
+  height: 120px;
+  object-fit: contain;
+  object-position: center;
+}

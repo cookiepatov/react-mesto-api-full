@@ -1,0 +1,22 @@
+.header__content {
+  padding-top: 45px;
+  display: flex;
+  overflow: hidden;
+  transform: 0.2s ease-in;
+  grid-column: 1/1;
+  width: 100%;
+}
+
+
+
+
+@media screen and (max-width:560px) {
+  .header__content {
+    padding-top: 28px;
+    margin-left: 0;
+    margin-right: 0;
+    padding-right: 30px;
+    padding-left: 30px;
+    grid-row: 2;
+  }
+}

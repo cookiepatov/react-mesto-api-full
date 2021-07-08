@@ -1,0 +1,52 @@
+.header__humburger-button {
+  display: none;
+  cursor: pointer;
+  transition: 0.5s ease-in-out;
+}
+
+.header__humburger-button:hover {
+  opacity: 0.85;
+}
+
+@media screen and (max-width:560px) {
+  .header__humburger-button {
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    width: 24px;
+    height: 3px;
+    background-color: white;
+    border: none;
+    position: relative;
+    margin-top: 9px;
+    grid-column: 2/2;
+    grid-row: 2/2;
+    justify-self: flex-end;
+    margin-right: 30px;
+    margin-top: 37px;
+  }
+
+  .header__humburger-button::before {
+    content: '';
+    display: block;
+    position: absolute;
+    margin-top: -9px;
+    width: 24px;
+    height: 3px;
+    background-color: white;
+    transition: 0.5s ease-in-out;
+  }
+
+  .header__humburger-button::after {
+    content: '';
+    display: block;
+    position: absolute;
+    margin-top: 9px;
+    width: 24px;
+    height: 3px;
+    background-color: white;
+    opacity: 1;
+    transition: 0.5s ease-in-out;
+  }
+}
