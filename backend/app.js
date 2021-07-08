@@ -3,6 +3,7 @@ const mongoose = require('mongoose');
 const bodyParser = require('body-parser');
 const cookieParser = require('cookie-parser');
 const { celebrate } = require('celebrate');
+require('dotenv').config();
 
 const celebrateErrorHandler = require('./middlewares/celebrateErrorHandler');
 const errorHandler = require('./middlewares/errorHandler');

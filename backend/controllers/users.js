@@ -4,6 +4,8 @@ const User = require('../models/user');
 const AlreadyExistsError = require('../utils/customErrors/AlreadyExistsError');
 const NotFoundError = require('../utils/customErrors/NotFoundError');
 
+const { NODE_ENV, JWT_SECRET } = process.env;
+
 module.exports.getUsers = (req, res, next) => {
   User.find({})
     .then((users) => res.send({ data: users }))
@@ -85,7 +87,9 @@ module.exports.login = (req, res, next) => {
 
   return User.findUserByCredentials(email, password)
     .then((user) => {
-      const token = jwt.sign({ _id: user._id }, 'temporary-key', { expiresIn: '7d' });
+      const token = jwt.sign({ _id: user._id },
+        NODE_ENV === 'production' ? JWT_SECRET : 'dev-secret',
+        { expiresIn: '7d' });
       res
         .cookie('jwt', token, {
           maxAge: 3600000 * 24 * 7,
@@ -93,7 +97,6 @@ module.exports.login = (req, res, next) => {
           sameSite: true,
         })
         .send({ message: 'Авторизация прошла успешно' });
-      /* .send({ token }); */
     })
     .catch(next);
 };
