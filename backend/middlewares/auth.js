@@ -1,3 +1,5 @@
+const { JWT_SECRET, NODE_ENV } = process.env;
+
 const jwt = require('jsonwebtoken');
 const AuthError = require('../utils/customErrors/AuthError');
 
@@ -7,17 +9,10 @@ module.exports = (req, res, next) => {
   }
 
   const token = req.cookies.jwt;
-
-  /* const { authorization } = req.headers;
-   if (!authorization || !authorization.startsWith('Bearer ')) {
-    throw new Error('authentification needed');
-  }
-
-  const token = authorization.replace('Bearer ', ''); */
   let payload;
 
   try {
-    payload = jwt.verify(token, 'temporary-key');
+    payload = jwt.verify(token, NODE_ENV === 'production' ? JWT_SECRET : 'dev-secret');
   } catch (err) {
     throw new AuthError('Не пройдена аутентификация');
   }
