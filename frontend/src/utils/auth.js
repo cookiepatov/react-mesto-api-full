@@ -37,7 +37,7 @@ class Api {
       headers: {
         'Content-Type': this._contentType
       },
-      credentials: 'include'
+      credentials: 'same-origin'
     })
       .then(res => this._resultHandler(res));
   }
