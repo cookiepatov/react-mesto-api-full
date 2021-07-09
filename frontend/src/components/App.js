@@ -42,7 +42,6 @@ function App() {
         setCurrentUser(user);
         setCards(cards.cards);
       }).catch(err => {
-        openToolTip(false);
         console.log(err);
       });
   }, [])
