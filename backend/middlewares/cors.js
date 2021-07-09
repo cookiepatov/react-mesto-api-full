@@ -5,10 +5,14 @@ const allowedCors = [
 ];
 
 module.exports = (req, res, next) => {
-  const { origin } = req.headers; // Сохраняем источник запроса в переменную origin
-  // проверяем, что источник запроса есть среди разрешённых
+  const { method } = req;
+  const { origin } = req.headers;
   if (allowedCors.includes(origin)) {
     res.header('Access-Control-Allow-Origin', origin);
+  }
+  const requestHeaders = req.headers['access-control-request-headers'];
+  if (method === 'OPTIONS') {
+    res.header('Access-Control-Allow-Headers', requestHeaders);
   }
 
   next();
