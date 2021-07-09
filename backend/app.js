@@ -9,7 +9,7 @@ const celebrateErrorHandler = require('./middlewares/celebrateErrorHandler');
 const errorHandler = require('./middlewares/errorHandler');
 const { requestLogger, errorLogger } = require('./middlewares/logger');
 const auth = require('./middlewares/auth');
-const cors = require('./middlewares/cors');
+/* const cors = require('./middlewares/cors'); */
 
 const { login, createUser } = require('./controllers/users');
 
@@ -32,7 +32,28 @@ mongoose.connect('mongodb://localhost:27017/mestodb', {
 
 app.use(requestLogger);
 
-app.use(cors);
+const allowedCors = [
+  'https://praktikum.tk',
+  'http://praktikum.tk',
+  'localhost:3000',
+];
+
+const DEFAULT_ALLOWED_METHODS = 'GET,HEAD,PUT,PATCH,POST,DELETE';
+
+app.use((req, res, next) => {
+  const { method } = req;
+  const { origin } = req.headers;
+  if (allowedCors.includes(origin)) {
+    res.header('Access-Control-Allow-Origin', origin);
+  }
+  const requestHeaders = req.headers['access-control-request-headers'];
+  if (method === 'OPTIONS') {
+    res.header('Access-Control-Allow-Methods', DEFAULT_ALLOWED_METHODS);
+    res.header('Access-Control-Allow-Headers', requestHeaders);
+  }
+
+  next();
+});
 
 app.post('/signin', celebrate(loginValidation), login);
 app.post('/signup', celebrate(createUserValidation), createUser);
