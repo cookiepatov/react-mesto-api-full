@@ -21,7 +21,9 @@ class Api {
 
   getUserInfo() {
     return fetch(this._baseUrl + '/users/me', {
-      credentials: 'same-origin'
+      headers: {
+        authorization: this._token
+      }
     }).then(res => this._resultHandler(res));
 
   }
@@ -30,9 +32,9 @@ class Api {
     return fetch(this._baseUrl + '/users/me', {
       method: 'PATCH',
       headers: {
-        'Content-Type': this._contentType
+        'Content-Type': this._contentType,
+        authorization: this._token
       },
-      credentials: 'same-origin',
       body: JSON.stringify({
         name,
         about
@@ -44,9 +46,9 @@ class Api {
     return fetch(this._baseUrl + '/users/me/avatar', {
       method: 'PATCH',
       headers: {
-        'Content-Type': this._contentType
+        'Content-Type': this._contentType,
+          authorization: this._token
       },
-      credentials: 'same-origin',
       body: JSON.stringify({
         avatar
       })
@@ -58,9 +60,9 @@ class Api {
     return fetch(this._baseUrl + '/cards', {
       method: 'POST',
       headers: {
-        'Content-Type': this._contentType
+        'Content-Type': this._contentType,
+        authorization: this._token
       },
-      credentials: 'same-origin',
       body: JSON.stringify({
         name,
         link
@@ -71,7 +73,9 @@ class Api {
   deleteCard(id) {
     return fetch(this._baseUrl + '/cards/' + id, {
       method: 'DELETE',
-      credentials: 'same-origin',
+      headers: {
+        authorization: this._token
+      }
     }).then(res => this._resultHandler(res));
   }
 
@@ -85,14 +89,18 @@ class Api {
   likeCard(id) {
     return fetch(this._baseUrl + '/cards/likes/' + id, {
       method: 'PUT',
-      credentials: 'same-origin'
+      headers: {
+        authorization: this._token
+      }
     }).then(res => this._resultHandler(res));
   }
 
   dislikeCard(id) {
     return fetch(this._baseUrl + '/cards/likes/' + id, {
       method: 'DELETE',
-      credentials: 'same-origin'
+      headers: {
+        authorization: this._token
+      }
     }).then(res => this._resultHandler(res));
   }
 }
