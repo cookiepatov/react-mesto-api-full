@@ -9,6 +9,7 @@ const celebrateErrorHandler = require('./middlewares/celebrateErrorHandler');
 const errorHandler = require('./middlewares/errorHandler');
 const { requestLogger, errorLogger } = require('./middlewares/logger');
 const auth = require('./middlewares/auth');
+const cors = require('./middlewares/cors');
 
 const { login, createUser } = require('./controllers/users');
 
@@ -30,6 +31,8 @@ mongoose.connect('mongodb://localhost:27017/mestodb', {
 });
 
 app.use(requestLogger);
+
+app.use(cors);
 
 app.post('/signin', celebrate(loginValidation), login);
 app.post('/signup', celebrate(createUserValidation), createUser);

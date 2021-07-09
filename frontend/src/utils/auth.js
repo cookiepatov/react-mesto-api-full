@@ -33,13 +33,13 @@ class Api {
     })
       .then(res => this._resultHandler(res));
   }
-  checkToken({jwt}) {
+  checkToken() {
     return fetch(this._baseUrl + '/users/me', {
       method: 'GET',
       headers: {
-        'Content-Type': this._contentType,
-        'Authorization': `Bearer ${jwt}`
-      }
+        'Content-Type': this._contentType
+      },
+      credentials: 'include'
     })
       .then(res => this._resultHandler(res));
   }
