@@ -14,7 +14,9 @@ class Api {
 
   getInitialCards() {
     return fetch(this._baseUrl + '/cards', {
-      credentials: 'same-origin'
+      headers: {
+        authorization: this._token
+      }
     })
       .then(res => this._resultHandler(res));
   }
@@ -47,7 +49,7 @@ class Api {
       method: 'PATCH',
       headers: {
         'Content-Type': this._contentType,
-          authorization: this._token
+        authorization: this._token
       },
       body: JSON.stringify({
         avatar

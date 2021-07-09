@@ -99,6 +99,7 @@ function App() {
     setPopupDataIsLoading(true);
     api.setUserInfo(name, about)
       .then(user => {
+        console.log(user);
         setCurrentUser(user);
         closeAllPopups();
       })

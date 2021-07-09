@@ -37,8 +37,7 @@ class Api {
       headers: {
         'Content-Type': this._contentType,
         'Authorization': `Bearer ${jwt}`
-      },
-      credentials: 'same-origin'
+      }
     })
       .then(res => this._resultHandler(res));
   }

@@ -12,7 +12,7 @@ module.exports = (req, res, next) => {
  */
   const { authorization } = req.headers;
   if (!authorization || !authorization.startsWith('Bearer ')) {
-    throw new AuthError('Не пройдена аутентификация: неверный токен');
+    throw new AuthError('Не пройдена аутентификация: отсутствует токен или хэдер авторизации');
   }
   const token = authorization.replace('Bearer ', '');
   let payload;
