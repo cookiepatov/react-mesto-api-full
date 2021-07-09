@@ -33,9 +33,8 @@ mongoose.connect('mongodb://localhost:27017/mestodb', {
 app.use(requestLogger);
 
 const allowedCors = [
-  'https://praktikum.tk',
-  'http://praktikum.tk',
-  'localhost:3000',
+  'https://mesto-reinat.nomoredomains.club',
+  'http://mesto-reinat.nomoredomains.club',
 ];
 
 const DEFAULT_ALLOWED_METHODS = 'GET,HEAD,PUT,PATCH,POST,DELETE';
