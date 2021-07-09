@@ -184,20 +184,22 @@ function App() {
       setUserEmail(user.email);
       saveToken(user.token);
       history.push('/');
-      api.getInitialCards()
+      setCurrentUser(user);
+    })
+      .catch(err => {
+        openToolTip(false);
+        console.log(err);
+    })
+      .finally(() => {
+        api.getInitialCards()
         .then(data => {
-          setCurrentUser(user);
           setCards(data.cards);
         })
         .catch(err => {
           openToolTip(false);
           console.log(err);
         });
-    })
-      .catch(err => {
-        openToolTip(false);
-        console.log(err);
-    })
+      })
   }
 
   function handleSignUp({ email, password }) {
