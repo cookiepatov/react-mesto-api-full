@@ -40,7 +40,7 @@ function App() {
       .then(([user, cards]) => {
         checkToken();
         setCurrentUser(user);
-        setCards(cards);
+        setCards(cards.cards);
       }).catch(err => {
         openToolTip(false);
         console.log(err);
