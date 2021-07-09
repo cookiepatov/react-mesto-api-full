@@ -14,14 +14,14 @@ class Api {
 
   getInitialCards() {
     return fetch(this._baseUrl + '/cards', {
-      credentials: 'include'
+      credentials: 'same-origin'
     })
       .then(res => this._resultHandler(res));
   }
 
   getUserInfo() {
     return fetch(this._baseUrl + '/users/me', {
-      credentials: 'include'
+      credentials: 'same-origin'
     }).then(res => this._resultHandler(res));
 
   }
@@ -32,7 +32,7 @@ class Api {
       headers: {
         'Content-Type': this._contentType
       },
-      credentials: 'include',
+      credentials: 'same-origin',
       body: JSON.stringify({
         name,
         about
@@ -46,7 +46,7 @@ class Api {
       headers: {
         'Content-Type': this._contentType
       },
-      credentials: 'include',
+      credentials: 'same-origin',
       body: JSON.stringify({
         avatar
       })
@@ -60,7 +60,7 @@ class Api {
       headers: {
         'Content-Type': this._contentType
       },
-      credentials: 'include',
+      credentials: 'same-origin',
       body: JSON.stringify({
         name,
         link
@@ -71,7 +71,7 @@ class Api {
   deleteCard(id) {
     return fetch(this._baseUrl + '/cards/' + id, {
       method: 'DELETE',
-      credentials: 'include'
+      credentials: 'same-origin',
     }).then(res => this._resultHandler(res));
   }
 
@@ -85,14 +85,14 @@ class Api {
   likeCard(id) {
     return fetch(this._baseUrl + '/cards/likes/' + id, {
       method: 'PUT',
-      credentials: 'include'
+      credentials: 'same-origin'
     }).then(res => this._resultHandler(res));
   }
 
   dislikeCard(id) {
     return fetch(this._baseUrl + '/cards/likes/' + id, {
       method: 'DELETE',
-      credentials: 'include'
+      credentials: 'same-origin'
     }).then(res => this._resultHandler(res));
   }
 }
