@@ -16,7 +16,7 @@ const apiData = {
   baseUrl: 'https://api.mesto-reinat.nomoredomains.monster',
   headers: {
     'Content-Type': 'application/json',
-    authorization: localStorage.getItem('jwt')
+    authorization: `Bearer ${localStorage.getItem('jwt')}`
   }
 }
 
