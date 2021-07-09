@@ -15,8 +15,7 @@ function Card(props) {
   const {likes, owner, name, link} = card;
   const currentOwnerId = owner;
   const isOwn = currentUserId === currentOwnerId;
-  const isLiked = likes.some(like => like._id === currentUserId);
-  console.log({currentUserId, currentOwnerId})
+  const isLiked = likes.some(likeId=> likeId === currentUserId);
 
   const deleteBtnClassName = isOwn ? 'element__delete-button' : 'element__delete-button element__delete-button_hidden';
   const likeBtnLikedClassName = isLiked ? 'element__like-button element__like-button_active' : '';
