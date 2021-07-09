@@ -15,7 +15,8 @@ const authValidation = {
 const apiData = {
   baseUrl: 'https://api.mesto-reinat.nomoredomains.monster',
   headers: {
-    'Content-Type': 'application/json'
+    'Content-Type': 'application/json',
+    authorization: localStorage.getItem('jwt')
   }
 }
 
