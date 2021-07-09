@@ -12,7 +12,6 @@ class Api {
 
 
   authorize({email, password}) {
-    console.log('/signin')
     return fetch(this._baseUrl + '/signin', {
       method: 'POST',
       headers: {
@@ -23,7 +22,6 @@ class Api {
       .then(res => this._resultHandler(res));
   }
   register({email, password}) {
-    console.log('/signup')
     return fetch(this._baseUrl + '/signup', {
       method: 'POST',
       headers: {
