@@ -180,7 +180,7 @@ function App() {
   function handleSignIn({ email, password }) {
     auth.authorize({ email, password }).then(res => {
       setLoggedIn(true);
-      setUserEmail(email);
+      setUserEmail(res.email);
       saveToken(res.token);
       history.push('/');
     }).catch(err => {
@@ -212,7 +212,7 @@ function App() {
     const jwt = localStorage.getItem('jwt');
     if(jwt) {
       auth.checkToken({jwt}).then((res) => {
-        setUserEmail(res.data.email);
+        setUserEmail(res.email);
         setLoggedIn(true);
         history.push('/');
       }).catch(err => {
