@@ -98,7 +98,7 @@ class Api {
   }
 
   dislikeCard(id) {
-    return fetch(this._baseUrl + `/cards/${id}/likes` + id, {
+    return fetch(this._baseUrl + `/cards/${id}/likes`, {
       method: 'DELETE',
       headers: {
         authorization: this._token
