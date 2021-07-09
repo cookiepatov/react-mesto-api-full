@@ -5,7 +5,7 @@ const AuthError = require('../utils/customErrors/AuthError');
 
 module.exports = (req, res, next) => {
   if (!req.cookies || !req.cookies.jwt) {
-    throw new AuthError('Не пройдена аутентификация');
+    throw new AuthError('Не пройдена аутентификация: отсутствует куки или токен');
   }
 
   const token = req.cookies.jwt;
@@ -14,7 +14,7 @@ module.exports = (req, res, next) => {
   try {
     payload = jwt.verify(token, NODE_ENV === 'production' ? JWT_SECRET : 'dev-secret');
   } catch (err) {
-    throw new AuthError('Не пройдена аутентификация');
+    throw new AuthError('Не пройдена аутентификация: неверный токен');
   }
 
   req.user = payload;
