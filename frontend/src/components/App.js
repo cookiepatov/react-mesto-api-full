@@ -132,13 +132,15 @@ function App() {
 
   function handleCardLike(card) {
     const isLiked = card.likes.some(like => like._id === currentUser._id);
-    api.changeLikeCardStatus(card._id, !isLiked).then((newCard) => {
-      setCards(cards => cards
-        .map(currentCard => currentCard._id === card._id ? newCard.card : currentCard));
-      closeAllPopups();
-    }).catch(err => {
-      openToolTip(false);
-      console.log(err);
+    api.changeLikeCardStatus(card._id, !isLiked)
+      .then((newCard) => {
+        setCards(cards => cards
+          .map(currentCard => currentCard._id === card._id ? newCard : currentCard));
+        closeAllPopups();
+      })
+      .catch(err => {
+        openToolTip(false);
+        console.log(err);
     });
   }
 
