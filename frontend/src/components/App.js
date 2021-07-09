@@ -179,14 +179,24 @@ function App() {
   }
 
   function handleSignIn({ email, password }) {
-    auth.authorize({ email, password }).then(res => {
+    auth.authorize({ email, password }).then(user => {
       setLoggedIn(true);
-      setUserEmail(res.email);
-      saveToken(res.token);
+      setUserEmail(user.email);
+      saveToken(user.token);
       history.push('/');
-    }).catch(err => {
-      openToolTip(false);
-      console.log(err);
+      api.getInitialCards()
+        .then(data => {
+          setCurrentUser(user);
+          setCards(data.cards);
+        })
+        .catch(err => {
+          openToolTip(false);
+          console.log(err);
+        });
+    })
+      .catch(err => {
+        openToolTip(false);
+        console.log(err);
     })
   }
 
