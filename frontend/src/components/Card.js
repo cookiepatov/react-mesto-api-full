@@ -13,7 +13,7 @@ function Card(props) {
   const {_id: currentUserId} = useContext(CurrentUserContext);
 
   const {likes, owner, name, link} = card;
-  const currentOwnerId = owner._id;
+  const currentOwnerId = owner;
   const isOwn = currentUserId === currentOwnerId;
   const isLiked = likes.some(like => like._id === currentUserId);
   console.log({currentUserId, currentOwnerId})

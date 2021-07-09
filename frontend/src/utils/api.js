@@ -89,7 +89,7 @@ class Api {
   }
 
   likeCard(id) {
-    return fetch(this._baseUrl + '/cards/likes/' + id, {
+    return fetch(this._baseUrl + `/cards/${id}/likes`, {
       method: 'PUT',
       headers: {
         authorization: this._token
@@ -98,7 +98,7 @@ class Api {
   }
 
   dislikeCard(id) {
-    return fetch(this._baseUrl + '/cards/likes/' + id, {
+    return fetch(this._baseUrl + `/cards/${id}/likes` + id, {
       method: 'DELETE',
       headers: {
         authorization: this._token
