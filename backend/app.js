@@ -9,7 +9,7 @@ const celebrateErrorHandler = require('./middlewares/celebrateErrorHandler');
 const errorHandler = require('./middlewares/errorHandler');
 const { requestLogger, errorLogger } = require('./middlewares/logger');
 const auth = require('./middlewares/auth');
-/* const cors = require('./middlewares/cors'); */
+const cors = require('./middlewares/cors');
 
 const { login, createUser } = require('./controllers/users');
 
@@ -30,32 +30,9 @@ mongoose.connect('mongodb://localhost:27017/mestodb', {
   useFindAndModify: false,
 });
 
+app.use(cors);
+
 app.use(requestLogger);
-
-const allowedCors = [
-  'https://mesto-reinat.nomoredomains.club',
-  'http://mesto-reinat.nomoredomains.club',
-];
-
-const DEFAULT_ALLOWED_METHODS = 'GET,HEAD,PUT,PATCH,POST,DELETE';
-
-app.use((req, res, next) => {
-  const { method } = req;
-  const { origin } = req.headers;
-  const requestHeaders = req.headers['access-control-request-headers'];
-  if (allowedCors.includes(origin)) {
-    res.header('Access-Control-Allow-Origin', origin);
-    res.header('Access-Control-Allow-Credentials', 'true');
-    res.header('Access-Control-Allow-Headers', requestHeaders);
-  }
-  if (method === 'OPTIONS') {
-    res.header('Access-Control-Allow-Methods', DEFAULT_ALLOWED_METHODS);
-    res.header('Access-Control-Allow-Headers', requestHeaders);
-    res.status(200).send();
-  }
-
-  next();
-});
 
 app.post('/signin', celebrate(loginValidation), login);
 app.post('/signup', celebrate(createUserValidation), createUser);
