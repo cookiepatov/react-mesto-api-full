@@ -47,6 +47,7 @@ function App() {
         setCards(cards.cards);
       }).catch(err => {
         console.log(err);
+        openToolTip(false);
       });
   }, [loggedIn])
 
@@ -100,7 +101,6 @@ function App() {
     setPopupDataIsLoading(true);
     api.setUserInfo(name, about)
       .then(user => {
-        console.log(user);
         setCurrentUser(user);
         closeAllPopups();
       })
@@ -221,8 +221,10 @@ function App() {
         setLoggedIn(true);
         history.push('/');
       }).catch(err => {
-        openToolTip(false);
-        console.log(err);
+        if (err !== 'no token') {
+          openToolTip(false);
+          console.log(err);
+        }
       })
   }
 
