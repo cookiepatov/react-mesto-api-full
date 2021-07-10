@@ -216,8 +216,6 @@ function App() {
 
 
   function checkToken() {
-    const jwt = localStorage.getItem('jwt');
-    if(jwt) {
       api.checkToken().then((data) => {
         console.log(data);
         setUserEmail(data.email);
@@ -227,7 +225,6 @@ function App() {
         openToolTip(false);
         console.log(err);
       })
-    }
   }
 
   function removeToken() {
