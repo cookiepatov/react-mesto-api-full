@@ -44,6 +44,7 @@ function App() {
       .then(([user, cards]) => {
         setCurrentUser(user);
         setCards(cards.cards);
+        setUserEmail(user.email);
       }).catch(err => {
         console.log(err);
         openToolTip(false);
@@ -183,9 +184,7 @@ function App() {
     api.authorize({ email, password }).then(user => {
       saveToken(user.token);
       setLoggedIn(true);
-      setUserEmail(user.email);
       history.push('/');
-      setCurrentUser(user);
     })
       .catch(err => {
         openToolTip(false);
@@ -216,7 +215,6 @@ function App() {
 
   function checkToken() {
       api.checkToken().then((data) => {
-        setUserEmail(data.email);
         setLoggedIn(true);
         history.push('/');
       }).catch(err => {
