@@ -19,16 +19,9 @@ const apiData = {
   }
 }
 
-const authData = {
-  baseUrl: 'https://api.mesto-reinat.nomoredomains.monster',
-  headers: {
-    'Content-Type': 'application/json'
-  }
-}
 
 export {
   validationSettings,
   authValidation,
-  apiData,
-  authData
+  apiData
 };
