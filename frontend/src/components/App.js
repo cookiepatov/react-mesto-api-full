@@ -217,7 +217,6 @@ function App() {
 
   function checkToken() {
       api.checkToken().then((data) => {
-        console.log(data);
         setUserEmail(data.email);
         setLoggedIn(true);
         history.push('/');

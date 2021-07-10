@@ -44,7 +44,7 @@ class Api {
       })
         .then(res => this._resultHandler(res));
     }
-    return false
+    return Promise.reject('no token')
   }
 
 
