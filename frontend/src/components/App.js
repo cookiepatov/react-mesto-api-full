@@ -36,21 +36,13 @@ function App() {
   const [userEmail, setUserEmail] = useState('');
 
   useEffect(() => {
-    Promise.all([api.getUserInfo(), api.getInitialCards()])
-      .then(([user, cards]) => {
-        checkToken();
-        setCurrentUser(user);
-        setCards(cards.cards);
-      }).catch(err => {
-        console.log(err);
-      });
+    checkToken();
   }, [])
 
 
   useEffect(() => {
-    Promise.all([api.getUserInfo(), api.getInitialCards()])
+    loggedIn && Promise.all([api.getUserInfo(), api.getInitialCards()])
       .then(([user, cards]) => {
-        checkToken();
         setCurrentUser(user);
         setCards(cards.cards);
       }).catch(err => {
@@ -214,6 +206,7 @@ function App() {
 
   function handleSignOut() {
     removeToken();
+    setLoggedIn(false);
   }
 
   function saveToken(jwt) {
