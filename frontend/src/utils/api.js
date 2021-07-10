@@ -11,20 +11,56 @@ class Api {
     return res.ok ? res.json() : Promise.reject(`Ошибка: ${res.status}`);
   }
 
+  authorize({email, password}) {
+    return fetch(this._baseUrl + '/signin', {
+      method: 'POST',
+      headers: {
+        'Content-Type': this._contentType
+      },
+      body: JSON.stringify({password, email})
+    })
+      .then(res => this._resultHandler(res));
+  }
 
-  getInitialCards(token = null) {
+  register({email, password}) {
+    return fetch(this._baseUrl + '/signup', {
+      method: 'POST',
+      headers: {
+        'Content-Type': this._contentType
+      },
+      body: JSON.stringify({password, email})
+    })
+      .then(res => this._resultHandler(res));
+  }
+
+  checkToken() {
+    if (this._token) {
+      return fetch(this._baseUrl + '/users/me', {
+        method: 'GET',
+        headers: {
+          'Content-Type': this._contentType,
+          authorization: this._token
+        }
+      })
+        .then(res => this._resultHandler(res));
+    }
+    return false
+  }
+
+
+  getInitialCards() {
     return fetch(this._baseUrl + '/cards', {
       headers: {
-        authorization: token ? `Bearer ${token}` : this._token
+        authorization: this._token
       }
     })
       .then(res => this._resultHandler(res));
   }
 
-  getUserInfo(token = null) {
+  getUserInfo() {
     return fetch(this._baseUrl + '/users/me', {
       headers: {
-        authorization: token ? `Bearer ${token}` : this._token
+        authorization: this._token
       }
     }).then(res => this._resultHandler(res));
 

@@ -167,8 +167,8 @@ function App() {
   function handleAddCard({ name, link }) {
     setPopupDataIsLoading(true);
     api.addNewCard(name, link)
-      .then(newCard => {
-        setCards(cards => [newCard.card, ...cards]);
+      .then(data => {
+        setCards(cards => [data.card, ...cards]);
         closeAllPopups();
       })
       .catch(err => {
@@ -218,8 +218,9 @@ function App() {
   function checkToken() {
     const jwt = localStorage.getItem('jwt');
     if(jwt) {
-      auth.checkToken({jwt}).then((res) => {
-        setUserEmail(res.email);
+      api.checkToken().then((data) => {
+        console.log(data);
+        setUserEmail(data.email);
         setLoggedIn(true);
         history.push('/');
       }).catch(err => {
