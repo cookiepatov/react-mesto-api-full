@@ -47,6 +47,16 @@ function App() {
   }, [])
 
 
+  useEffect(() => {
+    Promise.all([api.getUserInfo(), api.getInitialCards()])
+      .then(([user, cards]) => {
+        checkToken();
+        setCurrentUser(user);
+        setCards(cards.cards);
+      }).catch(err => {
+        console.log(err);
+      });
+  }, [loggedIn])
 
   function handleEditAvatarClick() {
     setEventListeners();
@@ -190,16 +200,6 @@ function App() {
         openToolTip(false);
         console.log(err);
     })
-      .finally(() => {
-        api.getInitialCards()
-        .then(data => {
-          setCards(data.cards);
-        })
-        .catch(err => {
-          openToolTip(false);
-          console.log(err);
-        });
-      })
   }
 
   function handleSignUp({ email, password }) {
