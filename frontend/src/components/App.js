@@ -1,7 +1,6 @@
 import { React, useEffect, useState, useCallback } from 'react';
 
 import { api } from '../utils/api';
-import { auth } from '../utils/auth'
 import { CurrentUserContext } from '../contexts/CurrentUserContext';
 
 import Header from './Header';
@@ -181,7 +180,7 @@ function App() {
   }
 
   function handleSignIn({ email, password }) {
-    auth.authorize({ email, password }).then(user => {
+    api.authorize({ email, password }).then(user => {
       saveToken(user.token);
       setLoggedIn(true);
       setUserEmail(user.email);
@@ -195,7 +194,7 @@ function App() {
   }
 
   function handleSignUp({ email, password }) {
-    auth.register({ email, password }).then(res => {
+    api.register({ email, password }).then(res => {
       openToolTip(true);
       history.push('/sign-in');
     }).catch(err => {
