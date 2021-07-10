@@ -167,7 +167,7 @@ function App() {
     setPopupDataIsLoading(true);
     api.addNewCard(name, link)
       .then(data => {
-        setCards(cards => [data.card, ...cards]);
+        setCards(cards => [...cards, data.cards]);
         closeAllPopups();
       })
       .catch(err => {

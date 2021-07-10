@@ -32,7 +32,7 @@ function Main(props) {
           key={item._id}
           onCardClick={onCardClick}
           onDeleteClick={onCardDelete}
-          onCardLike={onCardLike}/>))}
+          onCardLike={onCardLike}/>)).reverse()}
       </section>
     </main>
   );
