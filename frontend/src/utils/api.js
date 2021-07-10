@@ -3,7 +3,7 @@ import {apiData} from './constants';
 class Api {
   constructor(options) {
     this._baseUrl = options.baseUrl;
-    this._token = options.headers.authorization;
+    this._token = localStorage.getItem('jwt') ? `Bearer ${localStorage.getItem('jwt')}` : null;
     this._contentType = options.headers['Content-Type'];
   }
 
@@ -12,19 +12,19 @@ class Api {
   }
 
 
-  getInitialCards() {
+  getInitialCards(token = null) {
     return fetch(this._baseUrl + '/cards', {
       headers: {
-        authorization: this._token
+        authorization: token ? `Bearer ${token}` : this._token
       }
     })
       .then(res => this._resultHandler(res));
   }
 
-  getUserInfo() {
+  getUserInfo(token = null) {
     return fetch(this._baseUrl + '/users/me', {
       headers: {
-        authorization: this._token
+        authorization: token ? `Bearer ${token}` : this._token
       }
     }).then(res => this._resultHandler(res));
 
@@ -105,6 +105,11 @@ class Api {
       }
     }).then(res => this._resultHandler(res));
   }
+
+  setNewToken(jwt) {
+    this._token = `Bearer ${jwt}`;
+  }
+
 }
 
 export const api = new Api(apiData);

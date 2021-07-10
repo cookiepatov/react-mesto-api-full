@@ -182,9 +182,9 @@ function App() {
 
   function handleSignIn({ email, password }) {
     auth.authorize({ email, password }).then(user => {
+      saveToken(user.token);
       setLoggedIn(true);
       setUserEmail(user.email);
-      saveToken(user.token);
       history.push('/');
       setCurrentUser(user);
     })
@@ -211,6 +211,7 @@ function App() {
 
   function saveToken(jwt) {
     localStorage.setItem('jwt',jwt);
+    api.setNewToken(jwt);
   }
 
 
