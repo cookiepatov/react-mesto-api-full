@@ -7,7 +7,8 @@ class Api {
     this._contentType = options.headers['Content-Type'];
   }
 
-  static _resultHandler(res) {
+  // eslint-disable-next-line class-methods-use-this
+  _resultHandler(res) {
     return res.ok ? res.json() : Promise.reject(new Error(`Ошибка: ${res.status}`));
   }
 
