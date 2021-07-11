@@ -1,10 +1,9 @@
-import {React} from 'react';
-import {Link, withRouter} from 'react-router-dom';
+import { React } from 'react';
+import { Link, withRouter } from 'react-router-dom';
 import AuthForm from './AuthForm';
 
 function Register(props) {
   const { loggedIn, onRegister } = props;
-
 
   return (
     <div className="auth-form">

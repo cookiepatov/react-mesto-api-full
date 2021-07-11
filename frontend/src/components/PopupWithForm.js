@@ -1,8 +1,10 @@
 import React from 'react';
 
 function PopupWithForm(props) {
-  const {name, title, children, isOpen, onClose, onSubmit, formValidity, buttonText} = props;
-  const popupClassname = isOpen ? `popup popup_type_${name} popup_opened` : `popup popup_type_${name}`
+  const {
+    name, title, children, isOpen, onClose, onSubmit, formValidity, buttonText,
+  } = props;
+  const popupClassname = isOpen ? `popup popup_type_${name} popup_opened` : `popup popup_type_${name}`;
 
   return (
     <section className={popupClassname}>

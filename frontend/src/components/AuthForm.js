@@ -1,30 +1,32 @@
-import {React, useEffect} from 'react';
-import {useFormAndValidation} from '../utils/validator';
-import {authValidation} from '../utils/constants';
+import { React, useEffect } from 'react';
+import useFormAndValidation from '../utils/validator';
+import { authValidation } from '../utils/constants';
 
 function AuthForm(props) {
-  const { loggedIn, onSubmit, buttonText} = props;
+  const { loggedIn, onSubmit, buttonText } = props;
   const { inputClass, errorClass } = authValidation;
-  const { values,
+  const {
+    values,
     handleChange,
     errors,
     inputsClasses,
     errorsClasses,
     isValid,
-    resetForm } = useFormAndValidation(true);
+    resetForm,
+  } = useFormAndValidation(true);
 
   useEffect(() => {
     resetForm(
       { email: '', password: '' },
       { email: '', password: '' },
       { email: inputClass, password: inputClass },
-      { email: errorClass, password: errorClass });
+      { email: errorClass, password: errorClass },
+    );
   }, [loggedIn]);
 
   function handleSubmit(e) {
     e.preventDefault();
     onSubmit(values);
-
   }
 
   return (

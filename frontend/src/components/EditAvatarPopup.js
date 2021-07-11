@@ -1,42 +1,49 @@
-import {React, useEffect, useRef, useState} from 'react';
+import {
+  React, useEffect, useRef, useState,
+} from 'react';
 import PopupWithForm from './PopupWithForm';
-import {useFormAndValidation} from '../utils/validator'
-import {validationSettings} from '../utils/constants';
+import useFormAndValidation from '../utils/validator';
+import { validationSettings } from '../utils/constants';
 
 function EditAvatarPopup(props) {
-  const {isOpen, onClose, onUpdateAvatar, isLoading} = props;
-  const {inputClass, errorClass} = validationSettings;
-  const {values,
+  const {
+    isOpen, onClose, onUpdateAvatar, isLoading,
+  } = props;
+  const { inputClass, errorClass } = validationSettings;
+  const {
+    values,
     handleChange,
     errors,
     inputsClasses,
     errorsClasses,
     isValid,
-    resetForm} = useFormAndValidation();
+    resetForm,
+  } = useFormAndValidation();
   const [buttonText, setButtonText] = useState('Сохранить');
   const interval = useRef();
 
   useEffect(() => {
     if (isLoading) {
-      const dots = ['.','..','...'];
-      let i = 0
-      interval.current = setInterval(()=>{
+      const dots = ['.', '..', '...'];
+      let i = 0;
+      interval.current = setInterval(() => {
         setButtonText(`Сохранение${dots[i]}`);
         i = (i === 2) ? 0 : i + 1;
-      },200)
+      }, 200);
     } else {
-      clearInterval(interval.current)
-      setButtonText(`Сохранить`);
+      clearInterval(interval.current);
+      setButtonText('Сохранить');
     }
-  },[isLoading])
+  }, [isLoading]);
 
   useEffect(() => {
     resetForm(
-      {data: ''},
-      {data: ''},
-      {data: inputClass},
-      {data: errorClass},
-      false);
+      { data: '' },
+      { data: '' },
+      { data: inputClass },
+      { data: errorClass },
+      false,
+    );
   }, [isOpen]);
 
   function handleSubmit(e) {
@@ -65,7 +72,7 @@ function EditAvatarPopup(props) {
       <span className={errorsClasses.data}>{errors.data}</span>
     </PopupWithForm>
 
-  )
+  );
 }
 
 export default EditAvatarPopup;

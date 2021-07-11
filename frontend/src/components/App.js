@@ -1,10 +1,15 @@
-import { React, useEffect, useState, useCallback } from 'react';
+import {
+  React, useEffect, useState, useCallback,
+} from 'react';
 
-import { api } from '../utils/api';
-import { CurrentUserContext } from '../contexts/CurrentUserContext';
+import {
+  Switch, useHistory, useLocation, Route, withRouter,
+} from 'react-router-dom';
+import api from '../utils/api';
+import CurrentUserContext from '../contexts/CurrentUserContext';
 
 import Header from './Header';
-import Main from './Main'
+import Main from './Main';
 import Footer from './Footer';
 import EditProfilePopup from './EditProfilePopup';
 import ImagePopup from './ImagePopup';
@@ -14,7 +19,6 @@ import DeleteCardPopup from './DeleteCardPopup';
 import InfoTooltip from './InfoTooltip';
 import Login from './Login';
 import Register from './Register';
-import {Switch, useHistory, useLocation, Route, withRouter } from 'react-router-dom';
 import ProtectedRoute from './ProtectedRoute';
 
 function App() {
@@ -34,27 +38,85 @@ function App() {
   const [tooltipAcceptedStatus, setTooltipAcceptedStatus] = useState(false);
   const [userEmail, setUserEmail] = useState('');
 
+  function closeAllPopups() {
+    // eslint-disable-next-line no-use-before-define
+    removeEventListeners();
+    setEditAvatarPopupOpen(false);
+    setEditProfilePopupOpen(false);
+    setAddPlacePopupOpen(false);
+    setDeleteCardPopupOpen(false);
+    setImagePopupOpen(false);
+    setTooltipOpen(false);
+    setSelectedCard({});
+    setCardToDelete({});
+  }
+
+  const closeOnEsc = useCallback((e) => {
+    if (e.key === 'Escape') {
+      closeAllPopups();
+    }
+  }, []);
+
+  const closeOnOverlay = useCallback((e) => {
+    if (e.target.classList.contains('popup')) {
+      closeAllPopups();
+    }
+  }, []);
+
+  function removeEventListeners() {
+    document.removeEventListener('keydown', closeOnEsc);
+    document.removeEventListener('pointerdown', closeOnOverlay);
+  }
+
+  function setEventListeners() {
+    document.addEventListener('keydown', closeOnEsc);
+    document.addEventListener('pointerdown', closeOnOverlay);
+  }
+
+  function openToolTip(state) {
+    setTooltipOpen(true);
+    setTooltipAcceptedStatus(state);
+    setEventListeners();
+  }
+
+  function saveToken(jwt) {
+    localStorage.setItem('jwt', jwt);
+    api.setNewToken(jwt);
+  }
+
+  function checkToken() {
+    api.checkToken().then(() => {
+      setLoggedIn(true);
+      history.push('/');
+    }).catch((err) => {
+      if (err.message !== 'no token') {
+        openToolTip(false);
+        console.log(err);
+      }
+    });
+  }
+
   useEffect(() => {
     checkToken();
-  }, [])
-
+  }, []);
 
   useEffect(() => {
-    loggedIn && Promise.all([api.getUserInfo(), api.getInitialCards()])
-      .then(([user, cards]) => {
-        setCurrentUser(user);
-        setCards(cards.cards);
-        setUserEmail(user.email);
-      }).catch(err => {
-        console.log(err);
-        openToolTip(false);
-      });
-  }, [loggedIn])
+    if (loggedIn) {
+      Promise.all([api.getUserInfo(), api.getInitialCards()])
+        .then(([user, initialCardData]) => {
+          setCurrentUser(user);
+          setCards(initialCardData.cards);
+          setUserEmail(user.email);
+        }).catch((err) => {
+          console.log(err);
+          openToolTip(false);
+        });
+    }
+  }, [loggedIn]);
 
   function handleEditAvatarClick() {
     setEventListeners();
     setEditAvatarPopupOpen(true);
-
   }
 
   function handleEditProfileClick() {
@@ -64,7 +126,7 @@ function App() {
 
   function handleAddPlaceClick() {
     setEventListeners();
-    setAddPlacePopupOpen(true)
+    setAddPlacePopupOpen(true);
   }
 
   function handleDeleteCardClick(card) {
@@ -79,99 +141,77 @@ function App() {
     setSelectedCard(card);
   }
 
-  function openToolTip(state) {
-    setTooltipOpen(true);
-    setTooltipAcceptedStatus(state);
-    setEventListeners();
-  }
-
-  function closeAllPopups() {
-    removeEventListeners();
-    setEditAvatarPopupOpen(false);
-    setEditProfilePopupOpen(false);
-    setAddPlacePopupOpen(false);
-    setDeleteCardPopupOpen(false)
-    setImagePopupOpen(false);
-    setTooltipOpen(false);
-    setSelectedCard({});
-    setCardToDelete({});
-  }
-
   function handleUpdateUser({ name, about }) {
     setPopupDataIsLoading(true);
     api.setUserInfo(name, about)
-      .then(user => {
+      .then((user) => {
         setCurrentUser(user);
         closeAllPopups();
       })
-      .catch(err => {
+      .catch((err) => {
         openToolTip(false);
         console.log(err);
       })
       .finally(() => {
-        setPopupDataIsLoading(false)
+        setPopupDataIsLoading(false);
       });
   }
 
   function handleUpdateAvatar(link) {
     setPopupDataIsLoading(true);
     api.setUserAvatar(link)
-      .then(user => {
+      .then((user) => {
         setCurrentUser(user);
         closeAllPopups();
       })
-      .catch(err => {
+      .catch((err) => {
         openToolTip(false);
         console.log(err);
       })
       .finally(() => {
-        setPopupDataIsLoading(false)
+        setPopupDataIsLoading(false);
       });
   }
 
-
-
   function handleCardLike(card) {
-    const isLiked = card.likes.some(likeId => likeId === currentUser._id);
+    const isLiked = card.likes.some((likeId) => likeId === currentUser._id);
     api.changeLikeCardStatus(card._id, !isLiked)
       .then((newCard) => {
-        setCards(cards => cards
-          .map(currentCard => currentCard._id === card._id ? newCard : currentCard));
+        setCards((currentCards) => currentCards
+          .map((currentCard) => (currentCard._id === card._id ? newCard : currentCard)));
         closeAllPopups();
       })
-      .catch(err => {
+      .catch((err) => {
         openToolTip(false);
         console.log(err);
-    });
+      });
   }
 
   function handleConfirmDelete(card) {
     setPopupDataIsLoading(true);
     api.deleteCard(card._id)
       .then(() => {
-        setCards(cards => cards
-          .filter(currentCard => currentCard._id !== card._id));
+        setCards((currentCards) => currentCards
+          .filter((currentCard) => currentCard._id !== card._id));
         closeAllPopups();
       })
-      .catch(err => {
+      .catch((err) => {
         openToolTip(false);
         console.log(err);
       })
       .finally(() => {
-        setPopupDataIsLoading(false)
+        setPopupDataIsLoading(false);
       });
   }
-
-
 
   function handleAddCard({ name, link }) {
     setPopupDataIsLoading(true);
     api.addNewCard(name, link)
-      .then(data => {
-        setCards(cards => [...cards, data.card]);
+      .then((data) => {
+        setCards((currentCards) => [...currentCards, data.card]);
         closeAllPopups();
       })
-      .catch(err => {
+      .catch((err) => {
         openToolTip(false);
         console.log(err);
       })
@@ -181,25 +221,29 @@ function App() {
   }
 
   function handleSignIn({ email, password }) {
-    api.authorize({ email, password }).then(user => {
+    api.authorize({ email, password }).then((user) => {
       saveToken(user.token);
       setLoggedIn(true);
       history.push('/');
     })
-      .catch(err => {
+      .catch((err) => {
         openToolTip(false);
         console.log(err);
-    })
+      });
   }
 
   function handleSignUp({ email, password }) {
-    api.register({ email, password }).then(res => {
+    api.register({ email, password }).then(() => {
       openToolTip(true);
       history.push('/sign-in');
-    }).catch(err => {
+    }).catch((err) => {
       openToolTip(false);
       console.log(err);
-    })
+    });
+  }
+
+  function removeToken() {
+    localStorage.removeItem('jwt');
   }
 
   function handleSignOut() {
@@ -207,53 +251,7 @@ function App() {
     setLoggedIn(false);
   }
 
-  function saveToken(jwt) {
-    localStorage.setItem('jwt',jwt);
-    api.setNewToken(jwt);
-  }
-
-
-  function checkToken() {
-      api.checkToken().then((data) => {
-        setLoggedIn(true);
-        history.push('/');
-      }).catch(err => {
-        if (err !== 'no token') {
-          openToolTip(false);
-          console.log(err);
-        }
-      })
-  }
-
-  function removeToken() {
-    localStorage.removeItem('jwt');
-  }
-
-  function setEventListeners() {
-    document.addEventListener('keydown', closeOnEsc);
-    document.addEventListener('pointerdown', closeOnOverlay);
-  }
-
-  function removeEventListeners() {
-    document.removeEventListener('keydown', closeOnEsc);
-    document.removeEventListener('pointerdown', closeOnOverlay);
-  }
-
-
-  const closeOnEsc = useCallback((e) => {
-    if (e.key === 'Escape') {
-      closeAllPopups();
-    }
-  }, []);
-
-  const closeOnOverlay = useCallback((e) => {
-    if (e.target.classList.contains('popup')) {
-      closeAllPopups();
-    }
-  }, [])
-
   return (
-
       <CurrentUserContext.Provider value={currentUser}>
         <div className="page">
           <Header

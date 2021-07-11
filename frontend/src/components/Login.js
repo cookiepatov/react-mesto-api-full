@@ -1,8 +1,8 @@
-import {React} from 'react';
+import { React } from 'react';
 import AuthForm from './AuthForm';
 
 function Login(props) {
-  const {loggedIn, onLogin} = props;
+  const { loggedIn, onLogin } = props;
 
   return (
     <div className="auth-form">

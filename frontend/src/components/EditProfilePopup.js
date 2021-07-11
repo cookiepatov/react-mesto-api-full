@@ -1,20 +1,26 @@
-import {React, useState, useEffect, useContext, useRef} from 'react';
-import {CurrentUserContext} from '../contexts/CurrentUserContext';
+import {
+  React, useState, useEffect, useContext, useRef,
+} from 'react';
+import CurrentUserContext from '../contexts/CurrentUserContext';
 import PopupWithForm from './PopupWithForm';
 
-import {useFormAndValidation} from '../utils/validator';
-import {validationSettings} from '../utils/constants';
+import useFormAndValidation from '../utils/validator';
+import { validationSettings } from '../utils/constants';
 
 function EditProfilePopup(props) {
-  const {isOpen, onClose, onUpdateUser, isLoading} = props
-  const {inputClass, errorClass} = validationSettings;
-  const {values,
+  const {
+    isOpen, onClose, onUpdateUser, isLoading,
+  } = props;
+  const { inputClass, errorClass } = validationSettings;
+  const {
+    values,
     handleChange,
     errors,
     inputsClasses,
     errorsClasses,
     isValid,
-    resetForm} = useFormAndValidation();
+    resetForm,
+  } = useFormAndValidation();
 
   const currentUser = useContext(CurrentUserContext);
   const [buttonText, setButtonText] = useState('Сохранить');
@@ -22,32 +28,32 @@ function EditProfilePopup(props) {
 
   useEffect(() => {
     if (isLoading) {
-      const dots = ['.','..','...'];
-      let i = 0
-      interval.current = setInterval(()=>{
+      const dots = ['.', '..', '...'];
+      let i = 0;
+      interval.current = setInterval(() => {
         setButtonText(`Сохранение${dots[i]}`);
         i = (i === 2) ? 0 : i + 1;
-      },200)
+      }, 200);
     } else {
-      clearInterval(interval.current)
-      setButtonText(`Сохранить`);
+      clearInterval(interval.current);
+      setButtonText('Сохранить');
     }
-  },[isLoading])
+  }, [isLoading]);
 
   useEffect(() => {
     resetForm(
-      {name: currentUser.name, description: currentUser.about},
-      {name: '', description: ''},
-      {name:inputClass, description:inputClass},
-      {name:errorClass, description:errorClass},
-      true);
+      { name: currentUser.name, description: currentUser.about },
+      { name: '', description: '' },
+      { name: inputClass, description: inputClass },
+      { name: errorClass, description: errorClass },
+      true,
+    );
   }, [isOpen]);
-
 
   function handleSubmit(e) {
     e.preventDefault();
-    const {name, description: about} = values;
-    onUpdateUser({name, about});
+    const { name, description: about } = values;
+    onUpdateUser({ name, about });
   }
 
   return (
@@ -80,7 +86,7 @@ function EditProfilePopup(props) {
         value={values.description || ''}
         onChange={handleChange} />
       <span className={errorsClasses.description}>{errors.description}</span>
-    </PopupWithForm>)
+    </PopupWithForm>);
 }
 
-export default EditProfilePopup
+export default EditProfilePopup;

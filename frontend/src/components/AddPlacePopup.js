@@ -1,47 +1,54 @@
-import {React, useState, useEffect, useRef} from 'react';
+import {
+  React, useState, useEffect, useRef,
+} from 'react';
 import PopupWithForm from './PopupWithForm';
-import {useFormAndValidation} from '../utils/validator';
-import {validationSettings} from '../utils/constants';
+import useFormAndValidation from '../utils/validator';
+import { validationSettings } from '../utils/constants';
 
 function AddPlacePopup(props) {
-  const {isOpen, onClose, onAddPlace, isLoading} = props;
-  const {inputClass, errorClass} = validationSettings;
-  const {values,
+  const {
+    isOpen, onClose, onAddPlace, isLoading,
+  } = props;
+  const { inputClass, errorClass } = validationSettings;
+  const {
+    values,
     handleChange,
     errors,
     inputsClasses,
     errorsClasses,
     isValid,
-    resetForm} = useFormAndValidation();
+    resetForm,
+  } = useFormAndValidation();
   const [buttonText, setButtonText] = useState('Сохранить');
   const interval = useRef();
 
   useEffect(() => {
     if (isLoading) {
-      const dots = ['.','..','...'];
-      let i = 0
-      interval.current = setInterval(()=>{
+      const dots = ['.', '..', '...'];
+      let i = 0;
+      interval.current = setInterval(() => {
         setButtonText(`Сохранение${dots[i]}`);
         i = (i === 2) ? 0 : i + 1;
-      },200)
+      }, 200);
     } else {
-      clearInterval(interval.current)
-      setButtonText(`Сохранить`);
+      clearInterval(interval.current);
+      setButtonText('Сохранить');
     }
-  },[isLoading])
+  }, [isLoading]);
 
   useEffect(() => {
     resetForm(
-      {name: '', data: ''},
-      {name: '', data: ''},
-      {name:inputClass, data:inputClass},
-      {name:errorClass, data:errorClass});
+      { name: '', data: '' },
+      { name: '', data: '' },
+      { name: inputClass, data: inputClass },
+      { name: errorClass, data: errorClass },
+    );
   }, [isOpen]);
 
   function handleSubmit(e) {
     e.preventDefault();
-    const {name, data: link} = values;
-    onAddPlace({name, link});
+    const { name, data: link } = values;
+    onAddPlace({ name, link });
   }
 
   return (
@@ -75,7 +82,7 @@ function AddPlacePopup(props) {
         value={values.data || ''}/>
       <span className={errorsClasses.data}>{errors.data}</span>
     </PopupWithForm>
-  )
+  );
 }
 
 export default AddPlacePopup;

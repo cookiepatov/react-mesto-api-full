@@ -4,18 +4,17 @@ import check from '../images/check.svg';
 import cross from '../images/cross.svg';
 
 function InfoTooltip(props) {
-  const {isOpen, onClose, accepted} = props;
-  const popupClassname = isOpen ? `popup popup_type_tooltip popup_opened` : `popup popup_type_tooltip`
-  const { text, picSrc } = accepted ?
-  {
-    text: "Вы успешно зарегистрировались!",
-    picSrc: check
-  }
-    :
-  {
-    text: "Что-то пошло не так! Попробуйте ещё раз.",
-    picSrc: cross
-  }
+  const { isOpen, onClose, accepted } = props;
+  const popupClassname = isOpen ? 'popup popup_type_tooltip popup_opened' : 'popup popup_type_tooltip';
+  const { text, picSrc } = accepted
+    ? {
+      text: 'Вы успешно зарегистрировались!',
+      picSrc: check,
+    }
+    : {
+      text: 'Что-то пошло не так! Попробуйте ещё раз.',
+      picSrc: cross,
+    };
   return (
     <section className={popupClassname}>
       <div className="popup__container">
